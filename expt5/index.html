@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="medicoApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Medico.in</title>
+</head>
+<body ng-controller="MedicoController">
+    <div id="Home">
+        <nav>
+            <a href="#Home">Home</a>
+            <a href="#Medicines">Medicines</a>
+            <a href="#Order">Order</a>
+        </nav>
+        <div id="home-cont">
+            <h1>Welcome to Medico.in</h1>
+            <p>Your trusted online medical store for all your healthcare needs.</p>
+        </div>
+    </div>
+    <h2>Medicines</h2>
+    <div id="Medicines">
+        
+        <div ng-repeat="med in medicines" class="medicine">
+            <img ng-src="{{ med.img }}" alt="{{ med.name }}">
+            <p>{{ med.name }} | {{ med.price | currency }}</p>
+            <button ng-click="addToCart(med)">Add to Cart</button>
+        </div>
+    </div>
+    <div id="Order">
+        <h2>Your Orders</h2>
+        <div id="order-summary">
+            <p ng-repeat="order in orders">{{ order.name }} - {{ order.price | currency }}</p>
+        </div>
+        <p id="total-price">Total: {{ getTotalPrice() | currency }}</p>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script>
+        var app = angular.module('medicoApp', []);
+
+        app.controller('MedicoController', function($scope) {
+            $scope.medicines = [
+                { name: 'Paracetamol', price: 2, img: 'https://via.placeholder.com/100' },
+                { name: 'Vitamin C', price: 5, img: 'https://via.placeholder.com/100' },
+                { name: 'Cough Syrup', price: 7, img: 'https://via.placeholder.com/100' },
+                { name: 'Ibuprofen', price: 3, img: 'https://via.placeholder.com/100' },
+                { name: 'Antibiotic Cream', price: 4, img: 'https://via.placeholder.com/100' },
+                { name: 'Allergy Pills', price: 6, img: 'https://via.placeholder.com/100' }
+            ];
+
+            $scope.orders = [];
+
+            $scope.addToCart = function(medicine) {
+                $scope.orders.push(medicine);
+            };
+
+            $scope.getTotalPrice = function() {
+                return $scope.orders.reduce(function(total, order) {
+                    return total + order.price;
+                }, 0);
+            };
+        });
+    </script>
+</body>
+</html>
